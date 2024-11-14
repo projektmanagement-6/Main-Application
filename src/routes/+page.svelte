@@ -12,7 +12,7 @@
 	let isWorkSession: boolean = true;
 	let isRunning: boolean = false;
 	let interval: number | undefined = 10;
-	let radius: number = 250;
+	let radius: number = 230;
 	const stroke: number = 20;
 	let circumference = 2 * Math.PI * radius;
 
@@ -61,7 +61,7 @@
 	function formatTime(seconds: number) {
 		const minutes = Math.floor(seconds / 60);
 		const secondsLeft = seconds % 60;
-		return `${String(minutes).padStart(2, "0")}m ${String(secondsLeft).padStart(2, "0")}s`;
+		return `${String(minutes).padStart(2, "0")}:${String(secondsLeft).padStart(2, "0")}`;
 	}
 
 	$: offset = circumference - (remaining / duration) * circumference;
@@ -69,7 +69,7 @@
 
 <div class="container h-full mx-auto flex  justify-center items-center">
 	<div class="h-screen justify-center items-center flex ">
-		
+		<div class="justify-center items-center flex variant-glass-surface p-10 rounded-xl shadow-2xl">
 			<svg width="{(radius + stroke/2) * 2}" height="{(radius + stroke/2) * 2}">	
 				<circle
 					cx="{radius + stroke / 2}"
@@ -93,31 +93,31 @@
 				/> 
 			</svg>
 			<div class="absolute text-center">
-				<p class="font-solid text-8xl variant-glass-tertiary ">{formatTime(remaining)}</p>
+				<p class="lining-nums font-solid font-semibold text-8xl">{formatTime(remaining)}</p>
 				<div>
 					<div class="mt-6" style="display: flex; align-items: center;">
-					<button style="font-size: 12px; font-weight: bold;" class="m-2 bg-tertiary-500 rounded-full w-14 h-14 p-3" on:click={() => changeTime(-5)}>
+					<button style="font-size: 12px; font-weight: bold;" class="shadow-md m-2 variant-ghost-tertiary rounded-full w-14 h-14 p-3" on:click={() => changeTime(-5)}>
 						- 5m
 					</button>
-					<button style="font-size: 12px; font-weight: bold;" class="m-2 bg-tertiary-500 rounded-full w-14 h-14 p-3" on:click={() => changeTime(-1)}>
+					<button style="font-size: 12px; font-weight: bold;" class="shadow-md m-2 variant-ghost-tertiary rounded-full w-14 h-14 p-3" on:click={() => changeTime(-1)}>
 						- 1m
 					</button>
-					<button class="m-2 bg-tertiary-600 text-surface-100 rounded-full p-5" on:click={toggleTimer} disabled={isRunning && remaining === 0}>
+					<button class="shadow-md m-2 variant-ghost-tertiary text-surface-100 rounded-full p-5" on:click={toggleTimer} disabled={isRunning && remaining === 0}>
 						{#if !isRunning}
 							<Play size={32}/>
 						{:else}
 							<Pause size={32}/>
 						{/if}
 					</button>
-					<button style="font-size: 12px; font-weight: bold;" class="m-2 bg-tertiary-600 rounded-full w-14 h-14 p-3" on:click={() => changeTime(1)}>
+					<button style="font-size: 12px; font-weight: bold;" class="shadow-md m-2 variant-ghost-tertiary rounded-full w-14 h-14 p-3" on:click={() => changeTime(1)}>
 						+ 1m
 					</button>
-					<button style="font-size: 12px; font-weight: bold;" class="m-2 bg-tertiary-600 rounded-full w-14 h-14 p-3" on:click={() => changeTime(5)}>
+					<button style="font-size: 12px; font-weight: bold;" class="shadow-md m-2 variant-ghost-tertiary rounded-full w-14 h-14 p-3" on:click={() => changeTime(5)}>
 						+ 5m
 					</button>
 				</div>
 					<div class="mt-3 space-x-3">
-						<button id ="reset-btn" class="bg-surface-500 text-surface-100 rounded-full p-2" on:click={(event) => {
+						<button id ="reset-btn" class="shadow-md variant-ghost-surface text-surface-100 rounded-full p-2" on:click={(event) => {
 							if (event.detail === 1) {
 								switchSession();
 								switchSession();
@@ -127,10 +127,10 @@
 						}}>
 							<RotateCcw/>
 						</button> 
-						<button class="bg-surface-500 text-surface-100 rounded-full p-2" on:click={switchSession}>
+						<button class="shadow-md variant-ghost-surface text-surface-100 rounded-full p-2" on:click={switchSession}>
 							<Forward/>
 						</button> 
-						<button class="bg-surface-600 text-surface-100 rounded-full p-2" on:click={saveTime}>
+						<button class="shadow-md variant-ghost-surface text-surface-100 rounded-full p-2" on:click={saveTime}>
 							<Save />
 						</button>
 					</div>
@@ -138,3 +138,4 @@
 			</div>
 		</div>
 	</div>
+</div>
