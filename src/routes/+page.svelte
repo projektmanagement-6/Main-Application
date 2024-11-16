@@ -5,6 +5,25 @@
 	import Forward from 'lucide-svelte/icons/forward';
 	import Save from 'lucide-svelte/icons/save-all';
 
+	import { sound } from "svelte-sound";
+	import { Sound } from "svelte-sound";
+
+	import playStop_mp3 from "../SFX/Play_Stop_SFX.mp3";
+	import reset_mp3 from "../SFX/Reset_SFX.mp3";
+	import restart_mp3 from "../SFX/Restart_SFX.mp3";
+	import save_mp3 from "../SFX/Save_SFX.mp3";
+	import breakStart_mp3 from "../SFX/Break_Start_SFX.mp3";
+	import sessionStart_mp3 from "../SFX/Session_Start_SFX.mp3"
+
+	const reset_sound = new Sound(reset_mp3);
+	const restart_sound = new Sound(restart_mp3);
+	const break_sound = new Sound(breakStart_mp3);
+	const session_sound = new Sound(sessionStart_mp3);
+
+	function playSound(sfx: Sound) {
+		sfx.play();
+	}
+
 	let time_work: number = 25*60;
 	let time_pause: number = 5*60;
 	let remaining: number = time_work;
@@ -53,7 +72,11 @@
 		} else
 			interval = window.setInterval(() => {
 				if (remaining > 0) remaining--;
-				else switchSession();
+				else {
+					if (isWorkSession){playSound(break_sound);}
+					else {playSound(session_sound);}
+					switchSession();
+				}
 			}, 1000);
 		isRunning = !isRunning;
 	}
@@ -102,7 +125,7 @@
 					<button style="font-size: 12px; font-weight: bold;" class="shadow-md m-2 variant-ghost-tertiary rounded-full w-14 h-14 p-3" on:click={() => changeTime(-1)}>
 						- 1m
 					</button>
-					<button class="shadow-md m-2 variant-ghost-tertiary text-surface-100 rounded-full p-5" on:click={toggleTimer} disabled={isRunning && remaining === 0}>
+					<button class="shadow-md m-2 variant-ghost-tertiary text-surface-100 rounded-full p-5" use:sound={{ src: playStop_mp3, events: ["click"]}}  on:click={toggleTimer} disabled={isRunning && remaining === 0}>
 						{#if !isRunning}
 							<Play size={32}/>
 						{:else}
@@ -121,8 +144,10 @@
 							if (event.detail === 1) {
 								switchSession();
 								switchSession();
+								playSound(restart_sound);
 							} else if (event.detail === 2) {
 								resetTime();
+								playSound(reset_sound);
 							}
 						}}>
 							<RotateCcw/>
@@ -130,7 +155,7 @@
 						<button class="shadow-md variant-ghost-surface text-surface-100 rounded-full p-2" on:click={switchSession}>
 							<Forward/>
 						</button> 
-						<button class="shadow-md variant-ghost-surface text-surface-100 rounded-full p-2" on:click={saveTime}>
+						<button class="shadow-md variant-ghost-surface text-surface-100 rounded-full p-2" use:sound={{ src: save_mp3, events: ["click"]}} on:click={saveTime}>
 							<Save />
 						</button>
 					</div>

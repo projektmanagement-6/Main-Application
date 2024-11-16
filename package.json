@@ -27,6 +27,7 @@
   },
   "type": "module",
   "dependencies": {
-    "lucide-svelte": "^0.455.0"
+    "lucide-svelte": "^0.455.0",
+    "svelte-sound": "^0.6.0"
   }
 }
